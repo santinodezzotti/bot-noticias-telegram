@@ -29,7 +29,6 @@ def obtener_noticias():
     }
 
     noticias_enviadas = set()
-    mensaje = ""
 
     for nombre, url in feeds.items():
         feed = feedparser.parse(url)
@@ -37,8 +36,7 @@ def obtener_noticias():
         if not feed.entries:
             continue
 
-        mensaje += f"<b>{nombre}</b>\n"
-
+        mensaje = f"<b>{nombre}</b>\n\n"
         contador = 0
 
         for entry in feed.entries:
@@ -51,21 +49,13 @@ def obtener_noticias():
             mensaje += f"{entry.link}\n\n"
 
             contador += 1
-
             if contador == 5:
                 break
 
-        mensaje += "\n"
-
-    return mensaje
+        if contador > 0:
+            enviar_mensaje(mensaje)
 
 def main():
-    mensaje = obtener_noticias()
-    if mensaje:
-        enviar_mensaje(mensaje)
-    else:
-        enviar_mensaje("El bot funciona pero no encontró noticias.")
-
-
+     obtener_noticias()
 if __name__ == "__main__":
     main()
