@@ -21,10 +21,10 @@ def obtener_noticias():
     feeds = {
         "Clarín - Política": "https://www.clarin.com/rss/politica/",
         "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
-        "Infobae": "https://www.infobae.com/feeds/rss/",
-        "La Política Online": "https://www.lapoliticaonline.com/feed/",
+        "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/",
+        "La Política Online": "https://www.lapoliticaonline.com/?outputType=xml",
         "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
-        "Associated Press - Politics": "https://feeds.apnews.com/apf-politics",
+        "Associated Press - Politics": "https://feeds.apnews.com/rss/apf-topnews",
         "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
     }
 
