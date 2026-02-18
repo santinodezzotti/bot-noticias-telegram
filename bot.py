@@ -23,7 +23,7 @@ def obtener_noticias():
         "Clarín - Política": "https://www.clarin.com/rss/politica/",
         "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
         "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/",
-        "Reuters - Politics": "https://www.reutersagency.com/feed/?best-topics=politics&post_type=best",
+        "Reuters - Politics": "https://news.google.com/rss/search?q=site:reuters.com+politics&hl=en-US&gl=US&ceid=US:en",
         "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
         "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
     }
