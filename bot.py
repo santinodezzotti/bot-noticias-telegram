@@ -10,10 +10,12 @@ def enviar_mensaje(texto):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     data = {
         "chat_id": CHAT_ID,
-        "text": texto,
-        "parse_mode": "HTML"
+        "text": texto
     }
-    requests.post(url, data=data)
+    r = requests.post(url, data=data)
+    print("STATUS:", r.status_code)
+    print("RESPUESTA:", r.text)
+
 
 def obtener_noticias():
     feeds = {
