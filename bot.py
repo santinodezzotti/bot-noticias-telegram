@@ -1,74 +1,60 @@
-import feedparser
-import asyncio
-import pytz
-from datetime import datetime
-from telegram import Bot
 import os
-from flask import Flask
-import threading
+import feedparser
+import requests
+from datetime import datetime
 
-TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-bot = Bot(token=TOKEN)
+def enviar_mensaje(texto):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    data = {
+        "chat_id": CHAT_ID,
+        "text": texto,
+        "parse_mode": "HTML"
+    }
+    requests.post(url, data=data)
 
-sent_links = set()
+def obtener_noticias():
+    feeds = {
+        "Clarín - Política": "https://www.clarin.com/rss/politica/",
+        "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
+        "Infobae - Política": "https://www.infobae.com/feeds/rss/politica.xml",
+        "La Política Online": "https://www.lapoliticaonline.com/feed/",
+        "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
+        "AP News": "https://apnews.com/rss",
+        "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
+    }
 
-feeds = {
-    "Clarín": "https://www.clarin.com/rss/politica/",
-    "La Nación": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
-    "Infobae": "https://www.infobae.com/feeds/rss/politica.xml",
-    "La Política Online": "https://www.lapoliticaonline.com/rss.xml",
-    "BBC": "http://feeds.bbci.co.uk/news/world/rss.xml",
-    "AP News": "https://feeds.apnews.com/rss/apf-politics",
-    "Washington Post": "http://feeds.washingtonpost.com/rss/politics"
-}
+    noticias_enviadas = set()
+    mensaje = ""
 
-arg_tz = pytz.timezone("America/Argentina/Buenos_Aires")
-
-async def send_news():
-    now = datetime.now(arg_tz)
-
-    if now.hour < 6 or now.hour > 22:
-        return
-
-    if now.hour % 2 != 0:
-        return
-
-    message = "📰 Noticias actualizadas:\n\n"
-
-    for source, url in feeds.items():
+    for nombre, url in feeds.items():
         feed = feedparser.parse(url)
-        message += f"🔹 {source}\n"
 
-        count = 0
-        for entry in feed.entries[:5]:
-            if entry.link not in sent_links:
-                message += f"- {entry.title}\n{entry.link}\n\n"
-                sent_links.add(entry.link)
-                count += 1
-            if count == 3:
-                break
+        if feed.entries:
+            entry = feed.entries[0]
+            if entry.link not in noticias_enviadas:
+                noticias_enviadas.add(entry.link)
+                mensaje += f"<b>{nombre}</b>\n"
+                mensaje += f"{entry.title}\n"
+                mensaje += f"{entry.link}\n\n"
 
-        message += "\n"
+    return mensaje
 
-    if len(message) > 20:
-        await bot.send_message(chat_id=CHAT_ID, text=message[:4096])
+def main():
+    ahora = datetime.utcnow()
+    hora_arg = ahora.hour - 3  # Ajuste Argentina
 
-async def scheduler():
-    while True:
-        await send_news()
-        await asyncio.sleep(3600)
+    if hora_arg < 6 or hora_arg > 22:
+        return
 
-def run_async_loop():
-    asyncio.run(scheduler())
+    if hora_arg % 2 != 0:
+        return
 
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "Bot running"
+    mensaje = obtener_noticias()
+    if mensaje:
+        enviar_mensaje(mensaje)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_async_loop).start()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    main()
