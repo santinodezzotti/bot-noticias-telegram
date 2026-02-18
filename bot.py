@@ -18,21 +18,21 @@ def enviar_mensaje(texto):
 
 
 def obtener_noticias():
-   feeds = {
-    "Clarín - Política": "https://www.clarin.com/rss/politica/",
-    "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
-    "Infobae": "https://www.infobae.com/feeds/rss/",
-    "La Política Online": "https://www.lapoliticaonline.com/feed/",
-    "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
-    "Associated Press - Politics": "https://feeds.apnews.com/apf-politics",
-    "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
-}
+    feeds = {
+        "Clarín - Política": "https://www.clarin.com/rss/politica/",
+        "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
+        "Infobae": "https://www.infobae.com/feeds/rss/",
+        "La Política Online": "https://www.lapoliticaonline.com/feed/",
+        "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
+        "Associated Press - Politics": "https://feeds.apnews.com/apf-politics",
+        "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
+    }
 
-
+    feedparser.USER_AGENT = "Mozilla/5.0"
     noticias_enviadas = set()
 
     for nombre, url in feeds.items():
-       feed = feedparser.parse(url, agent="Mozilla/5.0")
+        feed = feedparser.parse(url)
 
         if not feed.entries:
             continue
@@ -55,6 +55,7 @@ def obtener_noticias():
 
         if contador > 0:
             enviar_mensaje(mensaje)
+
 
 def main():
      obtener_noticias()
