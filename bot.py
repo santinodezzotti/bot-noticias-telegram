@@ -43,18 +43,8 @@ def obtener_noticias():
     return mensaje
 
 def main():
-    ahora = datetime.utcnow()
-    hora_arg = ahora.hour - 3  # Ajuste Argentina
-
-    if hora_arg < 6 or hora_arg > 22:
-        return
-
-    if hora_arg % 2 != 0:
-        return
-
     mensaje = obtener_noticias()
     if mensaje:
         enviar_mensaje(mensaje)
-
-if __name__ == "__main__":
-    main()
+    else:
+        enviar_mensaje("El bot funciona pero no encontró noticias.")
