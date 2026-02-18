@@ -31,11 +31,17 @@ def obtener_noticias():
     feedparser.USER_AGENT = "Mozilla/5.0"
     noticias_enviadas = set()
 
-    for nombre, url in feeds.items():
-        feed = feedparser.parse(url)
+   for nombre, url in feeds.items():
+    feed = feedparser.parse(url)
 
-        if not feed.entries:
-            continue
+    print(nombre)
+    print("Status:", getattr(feed, "status", "No status"))
+    print("Entries:", len(feed.entries))
+    print("Bozo:", feed.bozo)
+    print("-----")
+
+    if not feed.entries:
+        continue
 
         mensaje = f"<b>{nombre}</b>\n\n"
         contador = 0
