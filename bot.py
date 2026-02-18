@@ -9,6 +9,10 @@ import os
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+print("TOKEN leído:", TOKEN)
+print("CHAT_ID leído:", CHAT_ID)
+
+
 bot = Bot(token=TOKEN)
 
 sent_links = set()
