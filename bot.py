@@ -22,9 +22,9 @@ def obtener_noticias():
         "Clarín - Política": "https://www.clarin.com/rss/politica/",
         "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
         "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/",
-        "La Política Online": "https://www.lapoliticaonline.com/?outputType=xml",
+        "La Política Online": "https://www.lapoliticaonline.com/feed/rss/",
         "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
-        "Associated Press - Politics": "https://feeds.apnews.com/rss/apf-topnews",
+        "Associated Press - Politics": "https://apnews.com/hub/politics?outputType=xml",
         "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
     }
 
