@@ -2,7 +2,7 @@ name: Noticias Telegram
 
 on:
   schedule:
-    - cron: '0 9-23/2 * * *'
+   - cron: '0 1,9-23/2 * * *'
   workflow_dispatch:
 
 jobs:
