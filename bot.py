@@ -18,20 +18,21 @@ def enviar_mensaje(texto):
 
 
 def obtener_noticias():
-    feeds = {
-        "Clarín - Política": "https://www.clarin.com/rss/politica/",
-        "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
-        "Infobae - Política": "https://www.infobae.com/feeds/rss/politica.xml",
-        "La Política Online": "https://www.lapoliticaonline.com/feed/",
-        "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
-        "AP News": "https://apnews.com/rss",
-        "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
-    }
+   feeds = {
+    "Clarín - Política": "https://www.clarin.com/rss/politica/",
+    "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
+    "Infobae": "https://www.infobae.com/feeds/rss/",
+    "La Política Online": "https://www.lapoliticaonline.com/feed/",
+    "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
+    "Associated Press - Politics": "https://feeds.apnews.com/apf-politics",
+    "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
+}
+
 
     noticias_enviadas = set()
 
     for nombre, url in feeds.items():
-        feed = feedparser.parse(url)
+       feed = feedparser.parse(url, agent="Mozilla/5.0")
 
         if not feed.entries:
             continue
