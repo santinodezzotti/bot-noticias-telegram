@@ -50,3 +50,7 @@ def main():
         enviar_mensaje(mensaje)
     else:
         enviar_mensaje("El bot funciona pero no encontró noticias.")
+
+
+if __name__ == "__main__":
+    main()
