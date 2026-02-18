@@ -34,13 +34,28 @@ def obtener_noticias():
     for nombre, url in feeds.items():
         feed = feedparser.parse(url)
 
-        if feed.entries:
-            entry = feed.entries[0]
-            if entry.link not in noticias_enviadas:
-                noticias_enviadas.add(entry.link)
-                mensaje += f"<b>{nombre}</b>\n"
-                mensaje += f"{entry.title}\n"
-                mensaje += f"{entry.link}\n\n"
+        if not feed.entries:
+            continue
+
+        mensaje += f"<b>{nombre}</b>\n"
+
+        contador = 0
+
+        for entry in feed.entries:
+            if entry.link in noticias_enviadas:
+                continue
+
+            noticias_enviadas.add(entry.link)
+
+            mensaje += f"• {entry.title}\n"
+            mensaje += f"{entry.link}\n\n"
+
+            contador += 1
+
+            if contador == 5:
+                break
+
+        mensaje += "\n"
 
     return mensaje
 
