@@ -51,7 +51,7 @@ def obtener_noticias():
             noticias_enviadas.add(entry.link)
 
             mensaje += f"• {entry.title}\n"
-            mensaj
+            mensaje
 
 def main():
      obtener_noticias()
