@@ -1,28 +1,29 @@
 import os
 import feedparser
 import requests
-from datetime import datetime
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+
 def enviar_mensaje(texto):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
     data = {
         "chat_id": CHAT_ID,
-        "text": texto
+        "text": texto,
+        "parse_mode": "HTML"
     }
-    r = requests.post(url, data=data)
-    print("STATUS:", r.status_code)
-    print("RESPUESTA:", r.text)
+
+    requests.post(url, data=data)
+
 
 def obtener_noticias():
     feeds = {
         "Clarín - Política": "https://www.clarin.com/rss/politica/",
         "La Nación - Política": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/category/politica/",
         "Infobae": "https://www.infobae.com/arc/outboundfeeds/rss/",
-        "La Política Online": "https://www.lapoliticaonline.com/feed/rss/",
-        "Associated Press - Politics": "https://apnews.com/hub/politics?outputType=xml",
+        "Reuters - Politics": "https://feeds.reuters.com/Reuters/PoliticsNews",
         "BBC - Mundo": "http://feeds.bbci.co.uk/mundo/rss.xml",
         "Washington Post - Politics": "http://feeds.washingtonpost.com/rss/politics"
     }
@@ -33,11 +34,6 @@ def obtener_noticias():
     for nombre, url in feeds.items():
         feed = feedparser.parse(url)
 
-        print(nombre)
-        print("Entries:", len(feed.entries))
-        print("Bozo:", feed.bozo)
-        print("-----")
-
         if not feed.entries:
             continue
 
@@ -45,15 +41,28 @@ def obtener_noticias():
         contador = 0
 
         for entry in feed.entries:
-            if entry.link in noticias_enviadas:
+            link = entry.get("link", "")
+            titulo = entry.get("title", "Sin título")
+
+            if not link or link in noticias_enviadas:
                 continue
 
-            noticias_enviadas.add(entry.link)
+            noticias_enviadas.add(link)
 
-            mensaje += f"• {entry.title}\n"
-            mensaje
+            mensaje += f"• {titulo}\n"
+            mensaje += f"{link}\n\n"
+
+            contador += 1
+            if contador == 5:
+                break
+
+        if contador > 0:
+            enviar_mensaje(mensaje)
+
 
 def main():
-     obtener_noticias()
+    obtener_noticias()
+
+
 if __name__ == "__main__":
     main()
